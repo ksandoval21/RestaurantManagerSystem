@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Employee newEmployee = new Employee();
+        Employee bl = new Employee();
         Scanner scan = new Scanner(System.in);
 	    System.out.println("Welcome! If you are an employee please select [1]. " +
             "If you are a customer please select [2]. ");
-	    Boolean valid = true;
+	    boolean valid = true;
         while (valid){
             System.out.print("> ");
             int input = scan.nextInt();
@@ -16,13 +16,30 @@ public class Main {
                     valid = false;
                     System.out.println("Are you a manager or waitress? ");
                     System.out.print("> ");
-                    String  answer = scan.next();
+                    String answer = scan.next();
                     if (answer.equals("manager")){
                         System.out.println("Do you want to add or remove menu items");
-                        newEmployee.manager();
+
                     }else if (answer.equals("waitress")){
                         System.out.println("Do you want to place and order or add to an existing order ");
-                        newEmployee.waitress();
+                        String order = scan.next();
+                        if (order.equals("order")){
+                            System.out.println("Enter Table Number: ");
+                            int tableNumeber = scan.nextInt();
+                            System.out.println("Enter Amount of Guest: ");
+                            int guestNumeber = scan.nextInt();
+                            System.out.println("Enter Drink: ");
+                            String drink = scan.next();
+                            System.out.println("Enter Starter: ");
+                            String starter = scan.next();
+                            System.out.println("Enter Main Course: ");
+                            String main = scan.next();
+                            System.out.println("Enter Dessert: ");
+                            String dessert = scan.next();
+                            Order ordered = new Order(tableNumeber, guestNumeber,drink, starter, main, dessert);
+                            bl.addOrder(ordered);
+                        }
+
                     }
 
                 }
