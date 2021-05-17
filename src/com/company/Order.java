@@ -2,17 +2,24 @@ package com.company;
 
 public class Order {
     int guest = 0;
+    int kids = 0;
     int tableNumber = 0;
     String drink = "";
-    String  starter = "";
-    String main = "";
-    String dessert = "";
-    public Order ( int guestAmount,int table,String drinkName, String starterName, String mainName, String dessertName) {
+
+    public Order ( int guestAmount, int kidsAmount, int table,String drinkName) {
         guest= guestAmount;
-        drink = drinkName;
+        kids = kidsAmount;
         tableNumber = table;
-        starter = starterName;
-        main = mainName;
-        dessert= dessertName;
+        drink = drinkName;
+
+    }
+    public String toString() {
+        String str = """
+                Guest: %s
+                Kids: %s
+                Table: %s
+                Drink: %s
+                """.formatted(guest, kids, tableNumber, drink);
+        return str;
     }
 }
