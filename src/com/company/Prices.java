@@ -2,8 +2,8 @@ package com.company;
 
 public class Prices {
     int pin = 1234;
-    int adultPrice = 10;
-    int kidPrice = 5;
+    double adultPrice = 10;
+    double kidPrice = 5;
     double drinkCost = 2.5;
 
     public String toString() {

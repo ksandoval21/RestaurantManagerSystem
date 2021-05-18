@@ -1,16 +1,18 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Order {
     int guest = 0;
     int kids = 0;
     int tableNumber = 0;
-    String drink = "";
+    ArrayList<String> drinks = new ArrayList<>() ;
 
-    public Order ( int guestAmount, int kidsAmount, int table,String drinkName) {
+    public Order ( int guestAmount, int kidsAmount, int table, ArrayList drinksName) {
         guest= guestAmount;
         kids = kidsAmount;
         tableNumber = table;
-        drink = drinkName;
+        drinks = drinksName;
 
     }
     public String toString() {
@@ -18,8 +20,8 @@ public class Order {
                 Guest: %s
                 Kids: %s
                 Table: %s
-                Drink: %s
-                """.formatted(guest, kids, tableNumber, drink);
+                Drinks: %s
+                """.formatted(guest, kids, tableNumber, drinks);
         return str;
     }
 }
