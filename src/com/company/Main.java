@@ -1,9 +1,9 @@
 package com.company;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Scanner;
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Employee bl = new Employee();
         Scanner scan = new Scanner(System.in);
 
@@ -52,6 +52,7 @@ public class Main {
                                 bl.getDrinks(totalGuest);
                                 Order ordered = new Order(guest, kids, table, bl.drinks);
                                 bl.addOrder(ordered);
+                                databaseUtils.addOrderToDatabase(ordered);
                                 System.out.println(ordered);
                             } else if (order.equals("existing")) {
                                 System.out.println("Enter Table Number: ");
@@ -105,6 +106,7 @@ public class Main {
                             Order ordered = new Order(guest, kids, table, bl.drinks);
                             bl.addOrder(ordered);
                             System.out.println(ordered);
+                            databaseUtils.addOrderToDatabase(ordered);
                         } else if (order.equals("pay")) {
                             System.out.println("What is your table number? ");
                             int table = scan.nextInt();

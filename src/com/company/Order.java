@@ -15,6 +15,39 @@ public class Order {
         drinks = drinksName;
 
     }
+
+    public int getKids() {
+        return kids;
+    }
+
+    public void setKids(int kids) {
+        this.kids = kids;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public ArrayList<String> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(ArrayList<String> drinks) {
+        this.drinks = drinks;
+    }
+
+    public int getGuest() {
+        return guest;
+    }
+
+    public void setGuest(int guest) {
+        this.guest = guest;
+    }
+
     public String toString() {
         String str = """
                 Guest: %s
