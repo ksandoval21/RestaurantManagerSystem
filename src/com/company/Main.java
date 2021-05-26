@@ -35,11 +35,8 @@ public class Main {
                                 bl.updatePrice(object, price);
 
                             }
-
-
                         } else if (answer.equals("waitress")) {
-                            boolean waitress = true;
-                            System.out.println("Do you want to place and order or add to an existing order or view tables? ");
+                            System.out.println("Do you want to place an order or add to an existing order or view tables or view orders? ");
                             String order = scan.next();
                             switch (order) {
                                 case "order" -> {
@@ -55,7 +52,7 @@ public class Main {
                                     bl.addOrder(ordered);
                                     databaseUtils.addOrder(ordered);
                                     System.out.println(ordered);
-                                    
+
                                 }
                                 case "existing" -> {
                                     System.out.println("Enter Table Number: ");
@@ -78,7 +75,12 @@ public class Main {
                                     }
 
                                 }
-                                case "view" -> bl.viewAll();
+                                case "view" -> {
+                                    databaseUtils.getTableNumbers();
+                                }
+                                case "orders"->{
+                                    databaseUtils.getOrdersFromDatabase();
+                                }
                                 default -> System.out.println("Enter correct option.");
                             }
                         } else {
@@ -111,12 +113,13 @@ public class Main {
                                 bl.addOrder(ordered);
                                 System.out.println(ordered);
                                 databaseUtils.addOrder(ordered);
+
                             }
                             case "pay" -> {
                                 System.out.println("What is your table number? ");
                                 int table = scan.nextInt();
                                 bl.getTotal(table);
-                                bl.payBalance(table);
+                                databaseUtils.deleteOrder(table);
                             }
                             case "go back","back" -> customer = false;
                             default -> System.out.println("Enter a valid input");

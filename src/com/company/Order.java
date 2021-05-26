@@ -6,16 +6,14 @@ public class Order {
     int guest = 0;
     int kids = 0;
     int tableNumber = 0;
-    ArrayList<String> drinks = new ArrayList<>() ;
+    ArrayList drinks = new ArrayList<>() ;
 
     public Order ( int guestAmount, int kidsAmount, int table, ArrayList drinksName) {
         guest= guestAmount;
         kids = kidsAmount;
         tableNumber = table;
         drinks = drinksName;
-
     }
-
     public int getKids() {
         return kids;
     }
