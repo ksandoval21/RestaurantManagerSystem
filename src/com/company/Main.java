@@ -6,40 +6,63 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         Employee bl = new Employee();
         Scanner scan = new Scanner(System.in);
-
         boolean valid = true;
-        System.out.println("Welcome to our buffet management system. ");
+        System.out.println("Welcome to our management system. ");
         while (valid) {
-            System.out.println("If you are an employee please select [1]. " +
-                    "If you are a customer please select [2]. ");
+            System.out.println("If you are an employee please select [A]. " +
+                    "If you are a customer please select [B]. Enter [Q] to quit. ");
             System.out.print("> ");
-            int input = scan.nextInt();
+            String input = scan.next();
             switch (input) {
-                case 1 -> {
+                case "A", "a", "employee" -> {
                     boolean employeeInput = true;
                     while (employeeInput) {
                         System.out.println("Are you a manager or waitress? ");
                         System.out.print("> ");
                         String answer = scan.next();
                         if (answer.equals("manager")) {
-                            System.out.println("Enter pin ");
-                            int pin = scan.nextInt();
-                            bl.checkPin(pin);
-                            System.out.println("Do you want to change prices? ");
-                            String reply = scan.next();
-                            if (reply.equals("yes")) {
-                                System.out.println("What price do you want to change? Adult, kid or drink price ");
-                                String object = scan.next();
-                                System.out.println("What do you want the new price to be? ");
-                                double price = scan.nextDouble();
-                                bl.updatePrice(object, price);
-
+                            System.out.println("What do you want to update? [pin, adult, child or drink] ");
+                            String response = scan.next();
+                            switch (response){
+                                case "update pin", "pin"->{
+                                    System.out.println("Enter pin ");
+                                    int pin = scan.nextInt();
+                                    System.out.println("Enter new pin ");
+                                    int newPin = scan.nextInt();
+                                    databaseUtils.updatePin(pin,newPin );
+                                }
+                                case "adult","guest","Adult","Guest"->{
+                                    System.out.println("Enter pin ");
+                                    int pin = scan.nextInt();
+                                    System.out.println("Enter new child price ");
+                                    double newAdult = scan.nextDouble();
+                                    databaseUtils.updateAdultPrice(pin,newAdult);
+                                }
+                                case  "kid", "Kid", "child" -> {
+                                    System.out.println("Enter pin ");
+                                    int pin = scan.nextInt();
+                                    System.out.println("Enter new adult price ");
+                                    double newChild = scan.nextDouble();
+                                    databaseUtils.updateChildPrice(pin,newChild);
+                                }
+                                case "drink", "Drinks"->{
+                                    System.out.println("Enter pin ");
+                                    int pin = scan.nextInt();
+                                    System.out.println("Enter new drink price ");
+                                    double newDrink = scan.nextDouble();
+                                    databaseUtils.updateDrinkPrice(pin,newDrink);
+                                }
                             }
+
                         } else if (answer.equals("waitress")) {
-                            System.out.println("Do you want to place an order or add to an existing order or view tables or view orders? ");
+                            System.out.println("a. place an order " +
+                                    "b. add to existing order " +
+                                    "c. view tables occupied " +
+                                    "d. view all orders " +
+                                    "e. view a specific order ");
                             String order = scan.next();
                             switch (order) {
-                                case "order" -> {
+                                case "order","a" -> {
                                     System.out.println("Enter Table Number: ");
                                     int table = scan.nextInt();
                                     System.out.println("Enter Amount of Guest: ");
@@ -54,32 +77,45 @@ public class Main {
                                     System.out.println(ordered);
 
                                 }
-                                case "existing" -> {
+                                case "existing","b" -> {
                                     System.out.println("Enter Table Number: ");
                                     int table = scan.nextInt();
-                                    System.out.println("What do you want to update? Guest, Drinks, or Table Numbers  ");
+                                    System.out.println("What do you want to update? Adult, Kids, Drinks, or Table Numbers  ");
                                     String response = scan.next();
                                     switch (response) {
-                                        case "adult", "kid", "Adult", "Kid", "guest", "Guest" -> {
-                                            System.out.println("Do you want to update adult or kid ");
-                                            String guest = scan.next();
+                                        case  "kid", "Kid","child" -> {
                                             System.out.println("What do you want to update it to ?");
                                             int newGuest = scan.nextInt();
-                                            bl.updateGuest(guest, newGuest, table);
+                                            databaseUtils.kidNumber(table,newGuest);
+                                        }
+                                        case "adult","guest","Adult","Guest"->{
+                                            System.out.println("What do you want to update it to ?");
+                                            int newGuest = scan.nextInt();
+                                            databaseUtils.guestNumber(table,newGuest);
                                         }
                                         case "table", "number", "Table number", "num" -> {
                                             System.out.println("What table do you want to update it to ?");
                                             int newTable = scan.nextInt();
-                                            bl.updateTableNumber(table, newTable);
+                                            databaseUtils.updateTable(table, newTable);
+                                        }
+                                        case "drink", "drinks"->{
+                                            System.out.println("Enter drinks separated by a comma ?");
+                                            String newDrink = scan.next();
+                                            databaseUtils.updateDrinks(table, newDrink);
                                         }
                                     }
 
                                 }
-                                case "view" -> {
+                                case "tables","c" -> {
                                     databaseUtils.getTableNumbers();
                                 }
-                                case "orders"->{
+                                case "orders", "d"->{
                                     databaseUtils.getOrdersFromDatabase();
+                                }
+                                case "e", "specific"->{
+                                    System.out.println("Enter table number");
+                                    int tableNumber = scan.nextInt();
+                                    databaseUtils.getOrder(tableNumber);
                                 }
                                 default -> System.out.println("Enter correct option.");
                             }
@@ -88,13 +124,11 @@ public class Main {
                             String yesOrNo = scan.next();
                             if (yesOrNo.equals("yes")) {
                                 employeeInput = false;
-                            } else {
-                                System.out.println("please enter correct input");
                             }
                         }
                     }
                 }
-                case 2 -> {
+                case "B", "b", "customer2" -> {
                     boolean customer = true;
                     while (customer) {
                         System.out.println("Start order or pay balance or go back?  ");
@@ -115,18 +149,27 @@ public class Main {
                                 databaseUtils.addOrder(ordered);
 
                             }
+                            case "view order"->{
+                                System.out.println("Enter table number");
+                                int tableNumber = scan.nextInt();
+                                databaseUtils.getOrder(tableNumber);
+                            }
                             case "pay" -> {
                                 System.out.println("What is your table number? ");
                                 int table = scan.nextInt();
+                                bl.getOrders();
                                 bl.getTotal(table);
                                 databaseUtils.deleteOrder(table);
                             }
                             case "go back","back" -> customer = false;
-                            default -> System.out.println("Enter a valid input");
+                            default -> System.err.println("Enter a valid input");
                         }
                     }
                 }
-                    default -> System.out.println("That was an invalid option. Please try again.");
+                case "quit", "q", "Q" ->{
+                    System.exit(0);
+                }
+                    default -> System.err.println("That was an invalid option. Please try again.");
                 }
             }
         }

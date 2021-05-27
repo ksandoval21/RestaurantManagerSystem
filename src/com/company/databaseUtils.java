@@ -61,7 +61,90 @@ public class databaseUtils {
                     new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
         }
         return orders;
+    }
+    public static void updateTable(int table, int newTable) throws SQLException{
+        connect();
+        String sql = "UPDATE Orders SET TableNumber = ? WHERE TableNumber = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setInt(1, newTable);
+        updateTableNumber.setInt(2, table);
+        updateTableNumber.executeUpdate();
+    }
+    public static void guestNumber(int table, int newGuest) throws SQLException{
+        connect();
+        String sql = "UPDATE Orders SET Guest = ? WHERE TableNumber = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setInt(1, newGuest);
+        updateTableNumber.setInt(2, table);
+        updateTableNumber.executeUpdate();
+    }
+    public static void kidNumber(int table, int newGuest) throws SQLException{
+        connect();
+        String sql = "UPDATE Orders SET Kids = ? WHERE TableNumber = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setInt(1, newGuest);
+        updateTableNumber.setInt(2, table);
+        updateTableNumber.executeUpdate();
+    }
+    public static void updateDrinks(int table, String drinks) throws SQLException{
+        connect();
+        String sql = "UPDATE Orders SET Drinks = ? WHERE TableNumber = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setString(1, drinks);
+        updateTableNumber.setInt(2, table);
+        updateTableNumber.executeUpdate();
+    }
+    public static void updatePin(int pin, int newPin) throws SQLException{
+        connect();
+        String sql = "UPDATE Prices SET Pin = ? WHERE Pin = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setInt(1, newPin);
+        updateTableNumber.setInt(2, pin);
+        updateTableNumber.executeUpdate();
+    }
+    public static void updateAdultPrice(int pin, double adultPrice) throws SQLException{
+        connect();
+        String sql = "UPDATE Prices SET Adult = ? WHERE Pin = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setDouble(1, adultPrice);
+        updateTableNumber.setInt(2, pin);
+        updateTableNumber.executeUpdate();
+    }
+    public static void updateChildPrice(int pin, double childPrice) throws SQLException{
+        connect();
+        String sql = "UPDATE Prices SET Child = ? WHERE Pin = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setDouble(1, childPrice);
+        updateTableNumber.setInt(2, pin);
+        updateTableNumber.executeUpdate();
+    }
+    public static void updateDrinkPrice(int pin, double drinkPrice) throws SQLException{
+        connect();
+        try {
+            String sql = "UPDATE Prices SET Drink = ? WHERE Pin = ?";
+            PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+            updateTableNumber.setDouble(1, drinkPrice);
+            updateTableNumber.setInt(2, pin);
+            updateTableNumber.executeUpdate();
+        }
+        catch(Exception e) {
+            System.out.println("Incorrect PIN");
+        }
 
+    }
+    public static ArrayList<Order> getOrder(int table)throws SQLException{
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM Orders WHERE TableNumber ="+ table);
+        ArrayList<Order> orders = new ArrayList<>();
+        while (data.next()) {
+            orders.add(new Order(data.getInt("tableNumber"),
+                    data.getInt("Guest"),
+                    data.getInt("Kids"),
+                    new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
+        }
+        System.out.println(orders);
+        return orders;
     }
 }
 
