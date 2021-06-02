@@ -29,6 +29,20 @@ public class databaseUtils {
                         "')"
         );
     }
+    public static void addPrice(Prices prices) throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        statement.executeUpdate(
+                "INSERT INTO Prices (" +
+                        " Adult , Child, Drink, Pin" +
+                        ") " +
+                        "VALUES ('" + prices.getAdultPrice() +
+                        "', " + prices.getKidPrice() +
+                        ", '" + prices.getDrinkCost() +
+                        "', '" +prices.getPin()+
+                        "')"
+        );
+    }
     public static ArrayList<Integer> getTableNumbers() throws SQLException {
         connect();
         var statement = conn.createStatement();
@@ -60,6 +74,7 @@ public class databaseUtils {
                     data.getInt("Kids"),
                     new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
         }
+        System.out.println(orders);
         return orders;
     }
     public static void updateTable(int table, int newTable) throws SQLException{
@@ -138,13 +153,33 @@ public class databaseUtils {
         var data = statement.executeQuery("SELECT * FROM Orders WHERE TableNumber ="+ table);
         ArrayList<Order> orders = new ArrayList<>();
         while (data.next()) {
-            orders.add(new Order(data.getInt("tableNumber"),
-                    data.getInt("Guest"),
+            orders.add(new Order(data.getInt("Guest"),
                     data.getInt("Kids"),
+                    data.getInt("tableNumber"),
                     new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
         }
         System.out.println(orders);
         return orders;
+    }
+    public static void deletePrices() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeUpdate("DELETE FROM Prices ");
+    }
+
+    public static ArrayList<Prices> getPrice() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM Prices");
+        ArrayList<Prices> price = new ArrayList<>();
+        while (data.next()) {
+            price.add(new Prices(data.getInt("pin"),
+                    data.getDouble("Adult"),
+                    data.getDouble("Child"),
+                    data.getDouble("Drink")));
+        }
+        System.out.println(price);
+        return price;
     }
 }
 

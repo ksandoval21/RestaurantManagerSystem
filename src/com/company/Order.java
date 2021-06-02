@@ -55,4 +55,7 @@ public class Order {
                 """.formatted(guest, kids, tableNumber, drinks);
         return str;
     }
+
+    public Order() {
+    }
 }

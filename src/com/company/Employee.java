@@ -34,8 +34,4 @@ public class Employee {
             }
         }
     }
-    public void getOrders() throws SQLException {
-        list = databaseUtils.getOrdersFromDatabase();
-        System.out.println(list);
-    }
 }

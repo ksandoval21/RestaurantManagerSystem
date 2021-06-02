@@ -1,7 +1,19 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Prices {
-    int pin = 1234;
+    int pin = 0;
+    double adultPrice = 0;
+    double kidPrice = 0;
+    double drinkCost = 0;
+
+    public Prices(int enteredPin, double guest, double kids, double drinks) {
+        pin = enteredPin;
+        adultPrice= guest;
+        kidPrice = kids;
+        drinkCost= drinks;
+    }
 
     public double getAdultPrice() {
         return adultPrice;
@@ -35,10 +47,6 @@ public class Prices {
         this.pin = pin;
     }
 
-    double adultPrice = 10;
-    double kidPrice = 5;
-    double drinkCost = 2.5;
-
     public String toString() {
         String str = """
                 Adult Price: %s
@@ -46,6 +54,9 @@ public class Prices {
                 Drink Price: %s
                 """.formatted(adultPrice, kidPrice, drinkCost);
         return str;
+    }
+
+    public Prices() {
     }
 }
 
