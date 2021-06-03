@@ -78,7 +78,7 @@ public class Main {
                                     }
                                 }
                                 case "c", "view"->{
-                                    databaseUtils.getPrice();
+                                    databaseUtils.getPrices();
                                 }
                             }
 
@@ -103,6 +103,7 @@ public class Main {
                                     bl.addOrder(ordered);
                                     databaseUtils.addOrder(ordered);
                                     System.out.println(ordered);
+                                    System.out.println("Your total is $" +databaseUtils.getTotal(table));
 
                                 }
                                 case "existing","b" -> {
@@ -135,15 +136,21 @@ public class Main {
 
                                 }
                                 case "tables","c" -> {
-                                    databaseUtils.getTableNumbers();
+                                    System.out.println("Occupied tables are " + databaseUtils.getTableNumbers());
                                 }
                                 case "orders", "d"->{
-                                    databaseUtils.getOrdersFromDatabase();
+                                    System.out.println(databaseUtils.getOrdersFromDatabase());
                                 }
                                 case "e", "specific"->{
                                     System.out.println("Enter table number");
                                     int tableNumber = scan.nextInt();
-                                    databaseUtils.getOrder(tableNumber);
+                                    Order specificOrder = databaseUtils.getOrder(tableNumber);
+                                    if (specificOrder != null){
+                                        System.out.println(specificOrder);
+                                        System.out.println("Your total is $" +databaseUtils.getTotal(tableNumber));
+                                    }else{
+                                        System.err.println("No order found");
+                                    }
                                 }
                                 default -> System.err.println("Enter correct option.");
                             }
@@ -175,16 +182,26 @@ public class Main {
                                 bl.addOrder(ordered);
                                 System.out.println(ordered);
                                 databaseUtils.addOrder(ordered);
+                                System.out.println("Your total is $" +databaseUtils.getTotal(table));
 
                             }
                             case "b","view order"->{
                                 System.out.println("Enter table number");
                                 int tableNumber = scan.nextInt();
                                 databaseUtils.getOrder(tableNumber);
+                                System.out.println("Your total is $" +databaseUtils.getTotal(tableNumber));
                             }
                             case "c","pay" -> {
                                 System.out.println("What is your table number? ");
                                 int table = scan.nextInt();
+                                System.out.println("Your total is $" +databaseUtils.getTotal(table));
+                                System.out.println("Do you want to add a tip? ");
+                                String tip = scan.next();
+                                if (tip.equals("yes")){
+                                    System.out.println("Tip Amount");
+                                    double tipAmount= scan.nextInt();
+                                    System.out.println("Your new total is $" +databaseUtils.addTip(tipAmount, table));
+                                }
                                 System.out.println("Enter First Name");
                                 String firstname = scan.next();
                                 System.out.println("Enter Last Name");
@@ -194,10 +211,11 @@ public class Main {
                                 System.out.println("Enter CVV number");
                                 int cvv = scan.nextInt();
                                 databaseUtils.deleteOrder(table);
-                                System.out.println("Thank you for visiting!" +
+                                System.out.println("Thank you for visiting! " +
                                         "Come again soon");
                                 System.out.println("Name: "+firstname + " " + lastname);
                                 System.out.println("CC Num: "+cardNumber);
+                                System.exit(0);
                             }
                             case "go back","back" -> customer = false;
                             default -> System.err.println("Enter a valid input");
@@ -211,5 +229,6 @@ public class Main {
                 }
             }
         }
+
     }
 

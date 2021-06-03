@@ -51,7 +51,6 @@ public class databaseUtils {
         while (data.next()) {
             tableNumbers.add(data.getInt("Tablenumber"));
         }
-        System.out.println("Occupied tables are " + tableNumbers);
         return tableNumbers;
     }
 
@@ -74,7 +73,6 @@ public class databaseUtils {
                     data.getInt("Kids"),
                     new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
         }
-        System.out.println(orders);
         return orders;
     }
     public static void updateTable(int table, int newTable) throws SQLException{
@@ -135,31 +133,25 @@ public class databaseUtils {
     }
     public static void updateDrinkPrice(int pin, double drinkPrice) throws SQLException{
         connect();
-        try {
-            String sql = "UPDATE Prices SET Drink = ? WHERE Pin = ?";
-            PreparedStatement updateTableNumber = conn.prepareStatement(sql);
-            updateTableNumber.setDouble(1, drinkPrice);
-            updateTableNumber.setInt(2, pin);
-            updateTableNumber.executeUpdate();
-        }
-        catch(Exception e) {
-            System.out.println("Incorrect PIN");
-        }
+        String sql = "UPDATE Prices SET Drink = ? WHERE Pin = ?";
+        PreparedStatement updateTableNumber = conn.prepareStatement(sql);
+        updateTableNumber.setDouble(1, drinkPrice);
+        updateTableNumber.setInt(2, pin);
+        updateTableNumber.executeUpdate();
 
     }
-    public static ArrayList<Order> getOrder(int table)throws SQLException{
+    public static Order getOrder(int table)throws SQLException{
         connect();
         var statement = conn.createStatement();
         var data = statement.executeQuery("SELECT * FROM Orders WHERE TableNumber ="+ table);
-        ArrayList<Order> orders = new ArrayList<>();
-        while (data.next()) {
-            orders.add(new Order(data.getInt("Guest"),
+        if (data.next()) {
+            return (new Order(data.getInt("Guest"),
                     data.getInt("Kids"),
                     data.getInt("tableNumber"),
                     new ArrayList<String>(Arrays.asList((data.getString("Drinks").split(","))))));
+        }else{
+            return null;
         }
-        System.out.println(orders);
-        return orders;
     }
     public static void deletePrices() throws SQLException {
         connect();
@@ -167,19 +159,30 @@ public class databaseUtils {
         var data = statement.executeUpdate("DELETE FROM Prices ");
     }
 
-    public static ArrayList<Prices> getPrice() throws SQLException {
+    public static Prices getPrices() throws SQLException {
         connect();
         var statement = conn.createStatement();
         var data = statement.executeQuery("SELECT * FROM Prices");
-        ArrayList<Prices> price = new ArrayList<>();
-        while (data.next()) {
-            price.add(new Prices(data.getInt("pin"),
+            return (new Prices(data.getInt("pin"),
                     data.getDouble("Adult"),
                     data.getDouble("Child"),
                     data.getDouble("Drink")));
+
+    }
+    public static double getTotal(int tableNumber) throws SQLException {
+        Prices prices = getPrices();
+        Order order = getOrder(tableNumber);
+        double total = 0;
+        if (order!= null){
+            total+= (prices.adultPrice * order.guest);
+            total+= (prices.kidPrice * order.kids);
+            total += (order.drinks.size() * prices.drinkCost);
         }
-        System.out.println(price);
-        return price;
+        return total;
+    }
+    public static double addTip(double tip,int tableNumber) throws SQLException {
+        double totals = getTotal(tableNumber);
+        return totals += tip;
     }
 }
 
